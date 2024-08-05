@@ -1,15 +1,13 @@
 import { Outlet } from 'react-router-dom';
 import Header from '../header/header';
-import Footer from '../footer/footer';
 
 function LayoutMain() : JSX.Element {
 
   return (
-    <>
+    <div className="page page--gray page--main">
       <Header />
       <Outlet />
-      <Footer />
-    </>
+    </div>
   );
 }
 
