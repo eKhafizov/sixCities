@@ -3,6 +3,7 @@ export type CommentType = {
     comment: string;
     rating: number;
   };
+
 export type CommentsType = CommentType[];
 
 export type OfferType = {

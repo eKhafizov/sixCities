@@ -5,6 +5,7 @@ import ErrorPage from '../pages/errorPage/errorPage';
 import LoginPage from '../pages/loginPage/loginPage';
 import OfferPage from '../pages/offerPage/offerPage';
 import LayoutMain from '../components/layout/layoutMain';
+import FavoritesPage from '../pages/favoritesPage/favoritesPage';
 
 
 function App(): JSX.Element {
@@ -12,15 +13,25 @@ function App(): JSX.Element {
   return (
     <Routes>
       <Route path={AppRoutes.MAIN} element={<LayoutMain />} >
-        <Route index element={<MainPage />} >
-          {/* <Route path=':city/:filter' element={<MainPage />} /> */}
-        </Route>
+        <Route index element={<MainPage />} />
+        <Route
+          path=':city/:filter'
+          element={<MainPage />}
+        />
         <Route path={AppRoutes.OFFER} >
           <Route path=':id' element={<OfferPage />} />
         </Route>
-        <Route path={AppRoutes.LOGIN} element={<LoginPage />} />
-        <Route path='*' element={<ErrorPage />} />
+        <Route path={AppRoutes.FAVORITES} element={<FavoritesPage />}/>
+        <Route
+          path='*'
+          element={<ErrorPage />}
+        />
       </Route>
+      <Route path={AppRoutes.LOGIN} element={<LoginPage />} />
+      <Route
+        path='*'
+        element={<ErrorPage />}
+      />
     </Routes>
   );
 }
