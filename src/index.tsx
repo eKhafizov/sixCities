@@ -1,6 +1,14 @@
 import ReactDOM from 'react-dom/client';
 import App from './app/app';
 import { StrictMode } from 'react';
+import { ThemeProvider } from 'styled-components';
+import defaultTheme from './themes/defaultTheme';
+import { Provider } from 'react-redux';
+import store from './store/store';
+import GlobalStyles from './themes/globalStyles';
+import ScrollToTop from './components/scrollToTop/scrollToTop';
+import browserHistory from './history/browserHistory';
+import HistoryRouter from './history/historyRouter';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement,
@@ -8,6 +16,14 @@ const root = ReactDOM.createRoot(
 
 root.render(
   <StrictMode >
-    <App />
+    <ThemeProvider theme={defaultTheme}>
+      <Provider store={store}>
+        <HistoryRouter history={browserHistory}>
+          <GlobalStyles />
+          <ScrollToTop />
+          <App />
+        </HistoryRouter>
+      </Provider>
+    </ThemeProvider>
   </StrictMode >
 );
