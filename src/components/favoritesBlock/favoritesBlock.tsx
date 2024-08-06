@@ -63,7 +63,7 @@ function FavoritesBlock({city}: {city: string}) : JSX.Element {
                     className="place-card__bookmark-button place-card__bookmark-button--active button"
                     type="button"
                     onClick={(e) => {
-                      isFavorite
+                      isFavorite === undefined
                         ? (dispatch(fetchAddFavorite({offerId: item.id})))
                         : (dispatch(fetchRemoveFavorite({offerId: item.id})));
                     }}

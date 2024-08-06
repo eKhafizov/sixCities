@@ -1,7 +1,23 @@
+import { useAppSelector } from '../../store/hooks/hooks';
+import { getAuth } from '../../store/slices/serverData/selectors';
+import { getFavorites } from '../../store/slices/userActivity/selectors';
+import { AuthStatus } from '../../store/utils/utils';
 import { AppRoutes } from '../../utils/appRoutes';
 import { Link } from 'react-router-dom';
 
 function Header() : JSX.Element {
+
+  const auth = useAppSelector(getAuth);
+  const favorites = useAppSelector(getFavorites);
+  const userInfo = useAppSelector((state) => state.USER_ACTIVITY.userInfo);
+  const favoriteNumber = () =>
+    favorites !== undefined && favorites !== null
+      ? (
+        favorites.length
+      ) : (
+        0
+      );
+
   return (
     <header className="header">
       <div className="container">
@@ -12,21 +28,35 @@ function Header() : JSX.Element {
             </Link>
           </div>
           <nav className="header__nav">
-            <ul className="header__nav-list">
-              <li className="header__nav-item user">
-                <Link to={AppRoutes.FAVORITES} className="header__nav-link header__nav-link--profile" >
-                  <div className="header__avatar-wrapper user__avatar-wrapper">
-                  </div>
-                  <span className="header__user-name user__name">Oliver.conner@gmail.com</span>
-                  <span className="header__favorite-count">3</span>
-                </Link>
-              </li>
-              <li className="header__nav-item">
-                <a className="header__nav-link" href="#">
-                  <span className="header__signout">Sign out</span>
-                </a>
-              </li>
-            </ul>
+            {
+              auth === AuthStatus.AUTH
+                ? (
+                  <ul className="header__nav-list">
+                    <li className="header__nav-item user">
+                      <Link to={AppRoutes.FAVORITES} className="header__nav-link header__nav-link--profile" >
+                        <div className="header__avatar-wrapper user__avatar-wrapper">
+                        </div>
+                        <span className="header__user-name user__name">{userInfo}</span>
+                        <span className="header__favorite-count">{favoriteNumber()}</span>
+                      </Link>
+                    </li>
+                    <li className="header__nav-item">
+                      <a className="header__nav-link" href="#">
+                        <span className="header__signout">Sign out</span>
+                      </a>
+                    </li>
+                  </ul>
+                )
+                : (
+                  <ul className="header__nav-list">
+                    <li className="header__nav-item">
+                      <Link className="header__nav-link" to={AppRoutes.LOGIN}>
+                        <span className="header__signout">Sign in</span>
+                      </Link>
+                    </li>
+                  </ul>
+                )
+            }
           </nav>
         </div>
       </div>

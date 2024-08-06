@@ -18,7 +18,7 @@ const serverData = createSlice({
   extraReducers(builder) {
     builder
       .addCase(checkAuthAction.fulfilled, (state, action) => {
-        state.authorized = AuthStatus.AUTH;
+        state = {...state};
       })
       .addCase(loginAuth.fulfilled, (state, action) => {
         state.authorized = AuthStatus.AUTH;

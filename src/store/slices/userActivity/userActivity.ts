@@ -9,6 +9,7 @@ type userActivityType = {
   chosenCity: string | null;
   favorites: OffersArray | null;
   chosenOffer: OfferType | null;
+  userInfo: string | null;
 };
 
 const initialState : userActivityType = {
@@ -16,7 +17,8 @@ const initialState : userActivityType = {
   offers: null,
   chosenCity: 'Amsterdam',
   favorites: null,
-  chosenOffer: null
+  chosenOffer: null,
+  userInfo: null
 };
 
 const userActivity = createSlice({
@@ -31,6 +33,9 @@ const userActivity = createSlice({
     },
     chooseOffer: (state, action: {payload: OfferType}) => {
       state.chosenOffer = action.payload;
+    },
+    getUserInfo: (state, action: {payload: string}) => {
+      state.userInfo = action.payload;
     }
   },
   extraReducers(builder) {
@@ -50,5 +55,5 @@ const userActivity = createSlice({
   }
 });
 
-export const {chooseCity, chooseFilter, chooseOffer} = userActivity.actions;
+export const {chooseCity, chooseFilter, chooseOffer, getUserInfo} = userActivity.actions;
 export default userActivity;

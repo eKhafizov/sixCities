@@ -4,7 +4,7 @@ import Reviews from '../../components/reviews/reviews';
 import { AuthStatus } from '../../store/utils/utils';
 import {fetchAddFavorite, fetchRemoveFavorite} from '../../store/api-actions/api-actions';
 import { AppRoutes } from '../../utils/appRoutes';
-import { getFavorites, getOffers } from '../../store/slices/userActivity/selectors';
+import { getOffers } from '../../store/slices/userActivity/selectors';
 
 
 function OfferPage() : JSX.Element {
@@ -15,7 +15,7 @@ function OfferPage() : JSX.Element {
   const auth = useAppSelector((state) => state.SERVER_DATA.authorized);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const favorites = useAppSelector(getFavorites);
+  const favorites = useAppSelector((state) => state.USER_ACTIVITY.favorites);
   const isFavorite = favorites?.find((item) => item.id === offer?.id);
 
 
@@ -47,7 +47,7 @@ function OfferPage() : JSX.Element {
                     className="place-card__bookmark-button button"
                     type="button"
                     onClick={(e) => {
-                      isFavorite
+                      isFavorite === undefined
                         ? (dispatch(fetchAddFavorite({offerId: offer.id})))
                         : (dispatch(fetchRemoveFavorite({offerId: offer.id})));
                     }}

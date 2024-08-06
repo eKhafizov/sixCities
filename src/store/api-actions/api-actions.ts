@@ -6,6 +6,60 @@ import { APIRoute } from '../utils/apiRoutes';
 import { OffersArray } from '../../types/types';
 import { saveToken } from '../../utils/token';
 import { ServerResponse } from 'http';
+import { getUserInfo } from '../slices/userActivity/userActivity';
+import { AppRoutes } from '../../utils/appRoutes';
+import { redirectAction } from '../actions/actions';
+
+
+export const fetchFavorites = createAsyncThunk<
+  OffersArray,
+  undefined,
+  {
+    dispatch: AppDispatch;
+    state: RootState;
+    extra: AxiosInstance;
+  }
+>(
+  'fetch/getFavorite',
+  async ( _arg, {extra: api}) => {
+    const {data} = await api.get<OffersArray>(`${APIRoute.Favourite}`);
+    return data;
+  }
+);
+
+export const fetchAddFavorite = createAsyncThunk<
+  ServerResponse,
+  {offerId: number},
+  {
+    dispatch: AppDispatch;
+    state: RootState;
+    extra: AxiosInstance;
+  }
+>(
+  'fetch/addFavorite',
+  async ( {offerId}, {dispatch, extra: api}) => {
+    const {data} = await api.post<ServerResponse>(`${APIRoute.Favourite}/${offerId}/1`);
+    dispatch(fetchFavorites());
+    return data;
+  }
+);
+
+export const fetchRemoveFavorite = createAsyncThunk<
+  ServerResponse,
+  {offerId: number},
+  {
+    dispatch: AppDispatch;
+    state: RootState;
+    extra: AxiosInstance;
+  }
+>(
+  'fetch/removeFavorite',
+  async ( {offerId}, {dispatch, extra: api}) => {
+    const {data} = await api.post<ServerResponse>(`${APIRoute.Favourite}/${offerId}/0`);
+    dispatch(fetchFavorites());
+    return data;
+  }
+);
 
 export const fetchOffers = createAsyncThunk<
   OffersArray,
@@ -59,58 +113,9 @@ export const loginAuth = createAsyncThunk<
   async ( {login: email, password} , {dispatch, extra: api}) => {
     const {data: {token}} = await api.post<UserData>(APIRoute.Login, {email, password});
     saveToken(token);
-    dispatch(checkAuthAction());
-  }
-);
-
-export const fetchFavorites = createAsyncThunk<
-  OffersArray,
-  undefined,
-  {
-    dispatch: AppDispatch;
-    state: RootState;
-    extra: AxiosInstance;
-  }
->(
-  'fetch/getFavorite',
-  async ( _arg, {extra: api}) => {
-    const {data} = await api.post<OffersArray>(`${APIRoute.Favourite}`);
-    //fetchFavorites
-    return data;
-  }
-);
-
-export const fetchAddFavorite = createAsyncThunk<
-  ServerResponse,
-  {offerId: number},
-  {
-    dispatch: AppDispatch;
-    state: RootState;
-    extra: AxiosInstance;
-  }
->(
-  'fetch/addFavorite',
-  async ( {offerId}, {dispatch, extra: api}) => {
-    const {data} = await api.post<ServerResponse>(`${APIRoute.Favourite}/${offerId}/1`);
+    dispatch(getUserInfo(email));
     dispatch(fetchFavorites());
-    return data;
-  }
-);
-
-export const fetchRemoveFavorite = createAsyncThunk<
-  ServerResponse,
-  {offerId: number},
-  {
-    dispatch: AppDispatch;
-    state: RootState;
-    extra: AxiosInstance;
-  }
->(
-  'fetch/removeFavorite',
-  async ( {offerId}, {dispatch, extra: api}) => {
-    const {data} = await api.post<ServerResponse>(`${APIRoute.Favourite}/${offerId}/0`);
-    dispatch(fetchFavorites());
-    return data;
+    redirectAction(AppRoutes.MAIN);
   }
 );
 

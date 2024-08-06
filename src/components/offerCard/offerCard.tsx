@@ -14,9 +14,9 @@ function OfferCard({offer}: {offer: OfferType}) : JSX.Element {
   const auth = useAppSelector((state) => state.SERVER_DATA.authorized);
   const navigate = useNavigate();
   const favorites = useAppSelector(getFavorites);
-  const isFavorite = favorites?.find((item) => item.id === offer.id);
+  const isFavorite = favorites !== null && favorites.find((item) => item.id === offer.id);
 
-  return (
+  return offer && (
     <article key={offer.id} className="cities__card place-card">
       {offer.isPremium && <div className="place-card__mark"><span>Premium</span></div>}
       <div className="cities__image-wrapper place-card__image-wrapper">
@@ -36,7 +36,7 @@ function OfferCard({offer}: {offer: OfferType}) : JSX.Element {
                 className="place-card__bookmark-button button"
                 type="button"
                 onClick={(e) => {
-                  isFavorite
+                  isFavorite === undefined
                     ? (dispatch(fetchAddFavorite({offerId: offer.id})))
                     : (dispatch(fetchRemoveFavorite({offerId: offer.id})));
                 }}

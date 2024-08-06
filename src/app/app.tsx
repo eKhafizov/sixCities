@@ -9,6 +9,9 @@ import FavoritesPage from '../pages/favoritesPage/favoritesPage';
 import { chooseCity, chooseFilter } from '../store/slices/userActivity/userActivity';
 import store from '../store/store/store';
 import { useEffect } from 'react';
+import PrivateRoute from '../components/PrivateRoute/privateRouter';
+import { useAppSelector } from '../store/hooks/hooks';
+import { getAuth } from '../store/slices/serverData/selectors';
 
 
 function App(): JSX.Element {
@@ -20,6 +23,7 @@ function App(): JSX.Element {
     const recievedCity = searchParams.get('city');
     recievedCity !== null && store.dispatch(chooseCity(recievedCity));
   });
+  const auth = useAppSelector(getAuth);
 
   return (
     <Routes>
@@ -32,7 +36,14 @@ function App(): JSX.Element {
         <Route path={AppRoutes.OFFER} >
           <Route path=':id' element={<OfferPage />} />
         </Route>
-        <Route path={AppRoutes.FAVORITES} element={<FavoritesPage />}/>
+        <Route
+          path={AppRoutes.FAVORITES}
+          element={
+            <PrivateRoute auth={auth}>
+              <FavoritesPage />
+            </PrivateRoute>
+          }
+        />
         <Route
           path='*'
           element={<ErrorPage />}
