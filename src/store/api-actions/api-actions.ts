@@ -4,6 +4,7 @@ import { AppDispatch } from '../types/types';
 import { AxiosInstance } from 'axios';
 import { APIRoute } from '../utils/apiRoutes';
 import { OffersArray } from '../../types/types';
+import { saveToken } from '../../utils/token';
 
 export const fetchOffers = createAsyncThunk<
   OffersArray,
@@ -35,3 +36,28 @@ export const checkAuthAction = createAsyncThunk<
 );
 
 
+export type UserData = {
+  id: number;
+  email: string;
+  token: string;
+};
+export type Login = {
+  login: string;
+  password: string;
+}
+export const loginAuth = createAsyncThunk<
+  void,
+  Login,
+  {
+    dispatch: AppDispatch;
+    state: RootState;
+    extra: AxiosInstance;
+  }
+>(
+  'server/login',
+  async ( {login: email, password} , {dispatch, extra: api}) => {
+    const {data: {token}} = await api.post<UserData>(APIRoute.Login, {email, password});
+    saveToken(token);
+    dispatch(checkAuthAction());
+  }
+);

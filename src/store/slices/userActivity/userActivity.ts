@@ -4,19 +4,28 @@ import { fetchOffers } from '../../api-actions/api-actions';
 import { OffersArray } from '../../../types/types';
 
 type userActivityType = {
-  filter: string;
+  chosenFilter: string;
   offers: OffersArray | null;
+  chosenCity: string | null;
 };
 
 const initialState : userActivityType = {
-  filter: 'all',
+  chosenFilter: 'popular',
   offers: null,
+  chosenCity: 'Amsterdam'
 };
 
 const userActivity = createSlice({
   name: Namespace.userActivity,
   initialState: initialState,
-  reducers: {},
+  reducers: {
+    chooseCity: (state, action: {payload: string} ) => {
+      state.chosenCity = action.payload;
+    },
+    chooseFilter: (state, action: {payload: string}) => {
+      state.chosenFilter = action.payload;
+    }
+  },
   extraReducers(builder) {
     builder
       .addCase(fetchOffers.fulfilled, (state, action) => {
@@ -25,4 +34,5 @@ const userActivity = createSlice({
   }
 });
 
+export const {chooseCity} = userActivity.actions;
 export default userActivity;

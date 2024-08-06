@@ -9,8 +9,9 @@ import GlobalStyles from './themes/globalStyles';
 import ScrollToTop from './components/scrollToTop/scrollToTop';
 import browserHistory from './history/browserHistory';
 import HistoryRouter from './history/historyRouter';
-import { fetchOffers } from './store/api-actions/api-actions';
+import { checkAuthAction, fetchOffers } from './store/api-actions/api-actions';
 
+store.dispatch(checkAuthAction());
 store.dispatch(fetchOffers());
 
 const root = ReactDOM.createRoot(
