@@ -33,7 +33,7 @@ function OfferCard({offer}: {offer: OfferType}) : JSX.Element {
           {
             auth === AuthStatus.AUTH ? (
               <button
-                className="place-card__bookmark-button button"
+                className={`place-card__bookmark-button button ${isFavorite ? 'place-card__bookmark-button--active' : ''}`}
                 type="button"
                 onClick={(e) => {
                   isFavorite === undefined
@@ -48,7 +48,7 @@ function OfferCard({offer}: {offer: OfferType}) : JSX.Element {
               </button>
             ) : (
               <button
-                className="place-card__bookmark-button button"
+                className={`place-card__bookmark-button button ${isFavorite ? 'place-card__bookmark-button--active' : ''}`}
                 type="button"
                 onClick={(e) => {
                   navigate(AppRoutes.LOGIN);
