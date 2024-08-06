@@ -1,4 +1,4 @@
-import { Route, Routes } from 'react-router-dom';
+import { Route, Routes, useSearchParams } from 'react-router-dom';
 import { AppRoutes } from '../utils/appRoutes';
 import MainPage from '../pages/mainPage/mainPage';
 import ErrorPage from '../pages/errorPage/errorPage';
@@ -6,9 +6,17 @@ import LoginPage from '../pages/loginPage/loginPage';
 import OfferPage from '../pages/offerPage/offerPage';
 import LayoutMain from '../components/layout/layoutMain';
 import FavoritesPage from '../pages/favoritesPage/favoritesPage';
+import { chooseCity, chooseFilter } from '../store/slices/userActivity/userActivity';
+import store from '../store/store/store';
 
 
 function App(): JSX.Element {
+
+  const [searchParams, ] = useSearchParams({city: 'Amsterdam', filter: 'popular'});
+  const recievedFilter = searchParams.get('filter');
+  recievedFilter !== null && store.dispatch(chooseFilter(recievedFilter));
+  const recievedCity = searchParams.get('city');
+  recievedCity !== null && store.dispatch(chooseCity(recievedCity));
 
   return (
     <Routes>

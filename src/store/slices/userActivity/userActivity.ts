@@ -34,5 +34,5 @@ const userActivity = createSlice({
   }
 });
 
-export const {chooseCity} = userActivity.actions;
+export const {chooseCity, chooseFilter} = userActivity.actions;
 export default userActivity;

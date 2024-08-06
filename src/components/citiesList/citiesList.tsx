@@ -22,8 +22,10 @@ function CitiesList() : JSX.Element {
               <li key={city} className='locations__item'>
                 <button
                   className={`
-                    ${styles.button__city} locations__item-link tabs__item
+                    ${styles.button__city} 
                     ${city === chosenCity ? 'tabs__item--active' : ''}
+                    locations__item-link
+                    tabs__item
                     `}
                   onClick={(e) => {
                     setSearchParams({city: city, filter: currentFilter});
