@@ -1,18 +1,22 @@
 import { createSlice } from '@reduxjs/toolkit';
 import Namespace from '../../utils/utils';
-import { fetchOffers } from '../../api-actions/api-actions';
-import { OffersArray } from '../../../types/types';
+import { fetchOffers, fetchAddFavorite, fetchRemoveFavorite, fetchFavorites } from '../../api-actions/api-actions';
+import { OffersArray, OfferType } from '../../../types/types';
 
 type userActivityType = {
   chosenFilter: string;
   offers: OffersArray | null;
   chosenCity: string | null;
+  favorites: OffersArray | null;
+  chosenOffer: OfferType | null;
 };
 
 const initialState : userActivityType = {
   chosenFilter: 'popular',
   offers: null,
-  chosenCity: 'Amsterdam'
+  chosenCity: 'Amsterdam',
+  favorites: null,
+  chosenOffer: null
 };
 
 const userActivity = createSlice({
@@ -24,15 +28,27 @@ const userActivity = createSlice({
     },
     chooseFilter: (state, action: {payload: string}) => {
       state.chosenFilter = action.payload;
+    },
+    chooseOffer: (state, action: {payload: OfferType}) => {
+      state.chosenOffer = action.payload;
     }
   },
   extraReducers(builder) {
     builder
       .addCase(fetchOffers.fulfilled, (state, action) => {
         state.offers = action.payload;
+      })
+      .addCase(fetchFavorites.fulfilled, (state, action) => {
+        state.favorites = action.payload;
+      })
+      .addCase(fetchAddFavorite.fulfilled, (state) => {
+        state = {...state};
+      })
+      .addCase(fetchRemoveFavorite.fulfilled, (state) => {
+        state = {...state};
       });
   }
 });
 
-export const {chooseCity, chooseFilter} = userActivity.actions;
+export const {chooseCity, chooseFilter, chooseOffer} = userActivity.actions;
 export default userActivity;

@@ -24,13 +24,15 @@ function FilterForm() : JSX.Element {
       className="places__sorting"
       action="#"
       method="get"
-      onClick={(e) => {
-        e.preventDefault();
-        setOpened((prev) => !prev);
-      }}
     >
-      <span className="places__sorting-caption">Sort by </span>
-      <span className="places__sorting-type" >
+      <span className="places__sorting-caption" >Sort by </span>
+      <span
+        className="places__sorting-type"
+        onClick={(e) => {
+          e.preventDefault();
+          setOpened((prev) => !prev);
+        }}
+      >
         {
           chosenFilter
         }
@@ -49,6 +51,7 @@ function FilterForm() : JSX.Element {
                 (e) => {
                   chosenCity !== null && setSearchParams({city: chosenCity, filter: item});
                   dispatch(chooseFilter(item));
+                  setOpened((prev) => !prev);
                 }
               }
             >{item}

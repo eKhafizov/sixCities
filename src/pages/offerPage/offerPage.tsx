@@ -1,12 +1,23 @@
-import { useParams } from 'react-router-dom';
-import { useAppSelector } from '../../store/hooks/hooks';
+import { useNavigate, useParams } from 'react-router-dom';
+import { useAppDispatch, useAppSelector } from '../../store/hooks/hooks';
 import Reviews from '../../components/reviews/reviews';
+import { AuthStatus } from '../../store/utils/utils';
+import {fetchAddFavorite, fetchRemoveFavorite} from '../../store/api-actions/api-actions';
+import { AppRoutes } from '../../utils/appRoutes';
+import { getFavorites, getOffers } from '../../store/slices/userActivity/selectors';
+
 
 function OfferPage() : JSX.Element {
 
   const param = useParams();
-  const offers = useAppSelector((state) => state.USER_ACTIVITY.offers);
-  const offer = offers !== null && offers?.find((item) => item.id === Number(param.id));
+  const offers = useAppSelector(getOffers);
+  const offer = offers?.find((item) => item.id === Number(param.id));
+  const auth = useAppSelector((state) => state.SERVER_DATA.authorized);
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+  const favorites = useAppSelector(getFavorites);
+  const isFavorite = favorites?.find((item) => item.id === offer?.id);
+
 
   return offer ? (
     <main className="page__main page__main--property">
@@ -29,12 +40,39 @@ function OfferPage() : JSX.Element {
               <h1 className="property__name">
                 {offer.title}
               </h1>
-              <button className="property__bookmark-button button" type="button">
-                <svg className="property__bookmark-icon" width="31" height="33">
-                  <use xlinkHref="#icon-bookmark"></use>
-                </svg>
-                <span className="visually-hidden">To bookmarks</span>
-              </button>
+
+              { /* Bookmark Button */
+                auth === AuthStatus.AUTH ? (
+                  <button
+                    className="place-card__bookmark-button button"
+                    type="button"
+                    onClick={(e) => {
+                      isFavorite
+                        ? (dispatch(fetchAddFavorite({offerId: offer.id})))
+                        : (dispatch(fetchRemoveFavorite({offerId: offer.id})));
+                    }}
+                  >
+                    <svg className="place-card__bookmark-icon" width="31" height="33">
+                      <use xlinkHref="#icon-bookmark"></use>
+                    </svg>
+                    <span className="visually-hidden">To bookmarks</span>
+                  </button>
+                ) : (
+                  <button
+                    className="place-card__bookmark-button button"
+                    type="button"
+                    onClick={(e) => {
+                      navigate(AppRoutes.LOGIN);
+                    }}
+                  >
+                    <svg className="place-card__bookmark-icon" width="31" height="33">
+                      <use xlinkHref="#icon-bookmark"></use>
+                    </svg>
+                    <span className="visually-hidden">To bookmarks</span>
+                  </button>
+                )
+              }
+
             </div>
             <div className="property__rating rating">
               <div className="property__stars rating__stars">
@@ -122,7 +160,14 @@ function OfferPage() : JSX.Element {
                     <b className="place-card__price-value">&euro;80</b>
                     <span className="place-card__price-text">&#47;&nbsp;night</span>
                   </div>
-                  <button className="place-card__bookmark-button place-card__bookmark-button--active button" type="button">
+                  <button
+                    className="place-card__bookmark-button place-card__bookmark-button--active button" type="button"
+                    onClick={(e) => {
+                      auth === AuthStatus.AUTH
+                        ? (dispatch(fetchAddFavorite({offerId: offer.id})))
+                        : (navigate(AppRoutes.LOGIN));
+                    }}
+                  >
                     <svg className="place-card__bookmark-icon" width="18" height="19">
                       <use xlinkHref="#icon-bookmark"></use>
                     </svg>

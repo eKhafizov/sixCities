@@ -5,6 +5,7 @@ import { AxiosInstance } from 'axios';
 import { APIRoute } from '../utils/apiRoutes';
 import { OffersArray } from '../../types/types';
 import { saveToken } from '../../utils/token';
+import { ServerResponse } from 'http';
 
 export const fetchOffers = createAsyncThunk<
   OffersArray,
@@ -61,3 +62,69 @@ export const loginAuth = createAsyncThunk<
     dispatch(checkAuthAction());
   }
 );
+
+export const fetchFavorites = createAsyncThunk<
+  OffersArray,
+  undefined,
+  {
+    dispatch: AppDispatch;
+    state: RootState;
+    extra: AxiosInstance;
+  }
+>(
+  'fetch/getFavorite',
+  async ( _arg, {extra: api}) => {
+    const {data} = await api.post<OffersArray>(`${APIRoute.Favourite}`);
+    //fetchFavorites
+    return data;
+  }
+);
+
+export const fetchAddFavorite = createAsyncThunk<
+  ServerResponse,
+  {offerId: number},
+  {
+    dispatch: AppDispatch;
+    state: RootState;
+    extra: AxiosInstance;
+  }
+>(
+  'fetch/addFavorite',
+  async ( {offerId}, {dispatch, extra: api}) => {
+    const {data} = await api.post<ServerResponse>(`${APIRoute.Favourite}/${offerId}/1`);
+    dispatch(fetchFavorites());
+    return data;
+  }
+);
+
+export const fetchRemoveFavorite = createAsyncThunk<
+  ServerResponse,
+  {offerId: number},
+  {
+    dispatch: AppDispatch;
+    state: RootState;
+    extra: AxiosInstance;
+  }
+>(
+  'fetch/removeFavorite',
+  async ( {offerId}, {dispatch, extra: api}) => {
+    const {data} = await api.post<ServerResponse>(`${APIRoute.Favourite}/${offerId}/0`);
+    dispatch(fetchFavorites());
+    return data;
+  }
+);
+
+/*
+const {data} = await api.get<OffersArrayType>(APIRoute.Offers);
+const {data} = await api.get<OffersArrayType>(`${APIRoute.Offers}/${offerId}/nearby`);
+const {data} = await api.get<Comments>(`${APIRoute.Comments}/${offerId}`);
+const {data} = await api.post<Review>(`${APIRoute.Comments}/${id}`, {comment, rating});
+const {data} = await api.get<OffersArrayType>(APIRoute.Favourite);
+const {data} = await api.post<ServerResponse>(`${APIRoute.Favourite}/${offerId}/1`);
+const {data} = await api.post<ServerResponse>(`${APIRoute.Favourite}/${offerId}/0`);
+await api.delete(APIRoute.Logout);
+
+await api.get(APIRoute.Login);
+const {data: {token}} = await api.post<UserData>(APIRoute.Login, {email, password});
+
+*/
