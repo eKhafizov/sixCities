@@ -13,7 +13,7 @@ import { useEffect } from 'react';
 
 function App(): JSX.Element {
 
-  const [searchParams, ] = useSearchParams({city: 'Amsterdam', filter: 'popular'});
+  const [searchParams, ] = useSearchParams();
   useEffect(()=> {
     const recievedFilter = searchParams.get('filter');
     recievedFilter !== null && store.dispatch(chooseFilter(recievedFilter));
