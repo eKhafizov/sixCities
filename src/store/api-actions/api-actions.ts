@@ -4,7 +4,7 @@ import { AppDispatch } from '../types/types';
 import { AxiosInstance } from 'axios';
 import { APIRoute } from '../utils/apiRoutes';
 import { OffersArray } from '../../types/types';
-import { saveToken } from '../../utils/token';
+import { dropToken, saveToken } from '../../utils/token';
 import { ServerResponse } from 'http';
 import { getUserInfo } from '../slices/userActivity/userActivity';
 import { AppRoutes } from '../../utils/appRoutes';
@@ -115,7 +115,23 @@ export const loginAuth = createAsyncThunk<
     saveToken(token);
     dispatch(getUserInfo(email));
     dispatch(fetchFavorites());
-    redirectAction(AppRoutes.MAIN);
+    dispatch(redirectAction(AppRoutes.MAIN));
+  }
+);
+export const logoutAuth = createAsyncThunk<
+  void,
+  undefined,
+  {
+    dispatch: AppDispatch;
+    state: RootState;
+    extra: AxiosInstance;
+  }
+>(
+  'server/logout',
+  async ( _arg , {dispatch, extra: api}) => {
+    await api.delete(APIRoute.Logout);
+    dropToken();
+    dispatch(redirectAction(AppRoutes.MAIN));
   }
 );
 

@@ -1,15 +1,18 @@
-import { useAppSelector } from '../../store/hooks/hooks';
+import { useAppSelector, useAppDispatch } from '../../store/hooks/hooks';
 import { getAuth } from '../../store/slices/serverData/selectors';
 import { getFavorites } from '../../store/slices/userActivity/selectors';
 import { AuthStatus } from '../../store/utils/utils';
 import { AppRoutes } from '../../utils/appRoutes';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { logoutAuth } from '../../store/api-actions/api-actions';
 
 function Header() : JSX.Element {
 
+  const dispatch = useAppDispatch();
   const auth = useAppSelector(getAuth);
   const favorites = useAppSelector(getFavorites);
   const userInfo = useAppSelector((state) => state.USER_ACTIVITY.userInfo);
+  const navigate = useNavigate();
   const favoriteNumber = () =>
     favorites !== undefined && favorites !== null
       ? (
@@ -41,9 +44,17 @@ function Header() : JSX.Element {
                       </Link>
                     </li>
                     <li className="header__nav-item">
-                      <a className="header__nav-link" href="#">
+                      <button
+                        className="header__nav-link"
+                        onClick={
+                          (e) => {
+                            dispatch(logoutAuth());
+                            navigate(AppRoutes.MAIN);
+                          }
+                        }
+                      >
                         <span className="header__signout">Sign out</span>
-                      </a>
+                      </button>
                     </li>
                   </ul>
                 )

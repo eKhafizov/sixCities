@@ -44,7 +44,7 @@ function OfferPage() : JSX.Element {
               { /* Bookmark Button */
                 auth === AuthStatus.AUTH ? (
                   <button
-                    className={`place-card__bookmark-button button ${isFavorite === undefined ? 'place-card__bookmark-button--active' : ''}`}
+                    className={`place-card__bookmark-button button ${isFavorite !== undefined ? 'place-card__bookmark-button--active' : ''}`}
                     type="button"
                     onClick={(e) => {
                       isFavorite === undefined
