@@ -1,6 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
-import Namespace from '../utils';
-import { AuthStatus } from '../utils';
+import Namespace from '../../utils/utils';
+import { AuthStatus } from '../../utils/utils';
+import {checkAuthAction} from '../../api-actions/api-actions';
 
 type serverDataType = {
   authorized: string;
@@ -14,7 +15,12 @@ const serverData = createSlice({
   name: Namespace.serverData,
   initialState: initialState,
   reducers: {},
-  extraReducers: {}
+  extraReducers(builder) {
+    builder
+      .addCase(checkAuthAction.fulfilled, (state, action) => {
+        state.authorized = AuthStatus.AUTH;
+      });
+  }
 });
 
 export default serverData;

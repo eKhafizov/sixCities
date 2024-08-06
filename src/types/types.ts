@@ -30,3 +30,4 @@ export type OfferType = {
   title: string;
   type: string;
 };
+export type OffersArray = OfferType[];

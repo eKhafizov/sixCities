@@ -1,7 +1,7 @@
 import { combineReducers } from '@reduxjs/toolkit';
-import Namespace from './utils';
-import userActivity from './userActivity/userActivity';
-import serverData from './serverData/serverData';
+import Namespace from '../utils/utils';
+import userActivity from '../slices/userActivity/userActivity';
+import serverData from '../slices/serverData/serverData';
 
 const RootReducer = combineReducers({
   [Namespace.serverData] : serverData.reducer,

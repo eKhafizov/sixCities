@@ -4,11 +4,14 @@ import { StrictMode } from 'react';
 import { ThemeProvider } from 'styled-components';
 import defaultTheme from './themes/defaultTheme';
 import { Provider } from 'react-redux';
-import store from './store/store';
+import store from './store/store/store';
 import GlobalStyles from './themes/globalStyles';
 import ScrollToTop from './components/scrollToTop/scrollToTop';
 import browserHistory from './history/browserHistory';
 import HistoryRouter from './history/historyRouter';
+import { fetchOffers } from './store/api-actions/api-actions';
+
+store.dispatch(fetchOffers());
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement,
