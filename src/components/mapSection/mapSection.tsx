@@ -1,6 +1,7 @@
+import 'leaflet/dist/leaflet.css';
 import { Icon, layerGroup, Marker } from 'leaflet';
 import { useEffect, useRef } from 'react';
-import useMap from '../../utils/useMap';
+import useMap from './useMap';
 import { useAppSelector } from '../../store/hooks/hooks';
 import { getChosenCity, getOffers } from '../../store/slices/userActivity/selectors';
 import { citiesLocation } from '../../utils/utils';
@@ -56,10 +57,13 @@ function MapSection() : JSX.Element {
 
   return (
     <div className="cities__right-section">
-      <section className="cities__map map" ref={myRef}>
-        <div style={{height: '600px'}} ref={myRef} />
+      <section className="cities__map map">
+        <div
+          style={{height: '600px'}}
+          ref={myRef} //добавили ссылку на элемент DOM с картой
+        >
+        </div>
       </section>
-    </div>
-  );
+    </div>);
 }
 export default MapSection;
