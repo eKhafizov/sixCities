@@ -135,6 +135,21 @@ export const logoutAuth = createAsyncThunk<
   }
 );
 
+export const fetchNearbyOffers = createAsyncThunk<
+  OffersArray,
+  {offerId: number},
+  {
+    dispatch: AppDispatch;
+    state: RootState;
+    extra: AxiosInstance;
+  }
+>(
+  'data/getNearby',
+  async ( {offerId}, {extra: api} ) => {
+    const {data} = await api.get<OffersArray>(`${APIRoute.Offers}/${offerId}/nearby`);
+    return data;
+  }
+);
 
 /*
 const {data} = await api.get<OffersArrayType>(`${APIRoute.Offers}/${offerId}/nearby`);

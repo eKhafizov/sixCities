@@ -1,10 +1,11 @@
-import { useNavigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../store/hooks/hooks';
 import Reviews from '../../components/reviews/reviews';
-import { AuthStatus } from '../../store/utils/utils';
-import {fetchAddFavorite, fetchRemoveFavorite} from '../../store/api-actions/api-actions';
-import { AppRoutes } from '../../utils/appRoutes';
-import { getOffers } from '../../store/slices/userActivity/selectors';
+import { getNearbyOffers, getOffers } from '../../store/slices/userActivity/selectors';
+import NearbyOffers from '../../components/nearbyOffers/nearbyOffers';
+import { useEffect } from 'react';
+import BookmarkLarge from '../../components/bookmarkLarge/bookmarkLarge';
+import { fetchNearbyOffers } from '../../store/api-actions/api-actions';
 
 
 function OfferPage() : JSX.Element {
@@ -12,12 +13,12 @@ function OfferPage() : JSX.Element {
   const param = useParams();
   const offers = useAppSelector(getOffers);
   const offer = offers?.find((item) => item.id === Number(param.id));
-  const auth = useAppSelector((state) => state.SERVER_DATA.authorized);
   const dispatch = useAppDispatch();
-  const navigate = useNavigate();
-  const favorites = useAppSelector((state) => state.USER_ACTIVITY.favorites);
-  const isFavorite = favorites?.find((item) => item.id === offer?.id);
 
+  const offersNearby = useAppSelector(getNearbyOffers);
+  useEffect(() => {
+    offer !== undefined && dispatch(fetchNearbyOffers({offerId: offer?.id}));
+  }, []);
 
   return offer ? (
     <main className="page__main page__main--property">
@@ -41,37 +42,7 @@ function OfferPage() : JSX.Element {
                 {offer.title}
               </h1>
 
-              { /* Bookmark Button */
-                auth === AuthStatus.AUTH ? (
-                  <button
-                    className={`place-card__bookmark-button button ${isFavorite !== undefined ? 'place-card__bookmark-button--active' : ''}`}
-                    type="button"
-                    onClick={(e) => {
-                      isFavorite === undefined
-                        ? (dispatch(fetchAddFavorite({offerId: offer.id})))
-                        : (dispatch(fetchRemoveFavorite({offerId: offer.id})));
-                    }}
-                  >
-                    <svg className="place-card__bookmark-icon" width="31" height="33">
-                      <use xlinkHref="#icon-bookmark"></use>
-                    </svg>
-                    <span className="visually-hidden">To bookmarks</span>
-                  </button>
-                ) : (
-                  <button
-                    className="place-card__bookmark-button button"
-                    type="button"
-                    onClick={(e) => {
-                      navigate(AppRoutes.LOGIN);
-                    }}
-                  >
-                    <svg className="place-card__bookmark-icon" width="31" height="33">
-                      <use xlinkHref="#icon-bookmark"></use>
-                    </svg>
-                    <span className="visually-hidden">To bookmarks</span>
-                  </button>
-                )
-              }
+              <BookmarkLarge offer={offer}/>
 
             </div>
             <div className="property__rating rating">
@@ -144,116 +115,7 @@ function OfferPage() : JSX.Element {
       </section>
 
 
-      <div className="container">
-        <section className="near-places places">
-          <h2 className="near-places__title">Other places in the neighbourhood</h2>
-          <div className="near-places__list places__list">
-            <article className="near-places__card place-card">
-              <div className="near-places__image-wrapper place-card__image-wrapper">
-                <a href="#">
-                  <img className="place-card__image" src="img/room.jpg" width="260" height="200" alt="Place image"/>
-                </a>
-              </div>
-              <div className="place-card__info">
-                <div className="place-card__price-wrapper">
-                  <div className="place-card__price">
-                    <b className="place-card__price-value">&euro;80</b>
-                    <span className="place-card__price-text">&#47;&nbsp;night</span>
-                  </div>
-                  <button
-                    className="place-card__bookmark-button place-card__bookmark-button--active button" type="button"
-                    onClick={(e) => {
-                      auth === AuthStatus.AUTH
-                        ? (dispatch(fetchAddFavorite({offerId: offer.id})))
-                        : (navigate(AppRoutes.LOGIN));
-                    }}
-                  >
-                    <svg className="place-card__bookmark-icon" width="18" height="19">
-                      <use xlinkHref="#icon-bookmark"></use>
-                    </svg>
-                    <span className="visually-hidden">In bookmarks</span>
-                  </button>
-                </div>
-                <div className="place-card__rating rating">
-                  <div className="place-card__stars rating__stars">
-                    <span style={{width: '80%'}}></span>
-                    <span className="visually-hidden">Rating</span>
-                  </div>
-                </div>
-                <h2 className="place-card__name">
-                  <a href="#">Wood and stone place</a>
-                </h2>
-                <p className="place-card__type">Private room</p>
-              </div>
-            </article>
-            <article className="near-places__card place-card">
-              <div className="near-places__image-wrapper place-card__image-wrapper">
-                <a href="#">
-                  <img className="place-card__image" src="img/apartment-02.jpg" width="260" height="200" alt="Place image"/>
-                </a>
-              </div>
-              <div className="place-card__info">
-                <div className="place-card__price-wrapper">
-                  <div className="place-card__price">
-                    <b className="place-card__price-value">&euro;132</b>
-                    <span className="place-card__price-text">&#47;&nbsp;night</span>
-                  </div>
-                  <button className="place-card__bookmark-button button" type="button">
-                    <svg className="place-card__bookmark-icon" width="18" height="19">
-                      <use xlinkHref="#icon-bookmark"></use>
-                    </svg>
-                    <span className="visually-hidden">To bookmarks</span>
-                  </button>
-                </div>
-                <div className="place-card__rating rating">
-                  <div className="place-card__stars rating__stars">
-                    <span style={{width: '80%'}}></span>
-                    <span className="visually-hidden">Rating</span>
-                  </div>
-                </div>
-                <h2 className="place-card__name">
-                  <a href="#">Canal View Prinsengracht</a>
-                </h2>
-                <p className="place-card__type">Apartment</p>
-              </div>
-            </article>
-            <article className="near-places__card place-card">
-              <div className="place-card__mark">
-                <span>Premium</span>
-              </div>
-              <div className="near-places__image-wrapper place-card__image-wrapper">
-                <a href="#">
-                  <img className="place-card__image" src="img/apartment-03.jpg" width="260" height="200" alt="Place image"/>
-                </a>
-              </div>
-              <div className="place-card__info">
-                <div className="place-card__price-wrapper">
-                  <div className="place-card__price">
-                    <b className="place-card__price-value">&euro;180</b>
-                    <span className="place-card__price-text">&#47;&nbsp;night</span>
-                  </div>
-                  <button className="place-card__bookmark-button button" type="button">
-                    <svg className="place-card__bookmark-icon" width="18" height="19">
-                      <use xlinkHref="#icon-bookmark"></use>
-                    </svg>
-                    <span className="visually-hidden">To bookmarks</span>
-                  </button>
-                </div>
-                <div className="place-card__rating rating">
-                  <div className="place-card__stars rating__stars">
-                    <span style={{width: '100%'}}></span>
-                    <span className="visually-hidden">Rating</span>
-                  </div>
-                </div>
-                <h2 className="place-card__name">
-                  <a href="#">Nice, cozy, warm big bed apartment</a>
-                </h2>
-                <p className="place-card__type">Apartment</p>
-              </div>
-            </article>
-          </div>
-        </section>
-      </div>
+      <NearbyOffers offersNearby={offersNearby} />
 
     </main>
   ) : (

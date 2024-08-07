@@ -7,6 +7,7 @@ import Namespace from '../../utils/utils';
 export const getOffers = (state: Pick<RootState, Namespace.userActivity>) : OffersArray | null => state.USER_ACTIVITY.offers;
 export const getFavorites = (state: Pick<RootState, Namespace.userActivity>) : OffersArray | null => state.USER_ACTIVITY.favorites;
 export const getChosenOffer = (state: Pick<RootState, Namespace.userActivity>) : OfferType | null => state.USER_ACTIVITY.chosenOffer;
+export const getNearbyOffers = (state: Pick<RootState, Namespace.userActivity>) : OffersArray | null => state.USER_ACTIVITY.nearbyOffers;
 
 export const isChosenFavorite = createSelector(
   [getFavorites, getChosenOffer],

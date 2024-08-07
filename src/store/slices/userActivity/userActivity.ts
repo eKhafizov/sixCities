@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import Namespace from '../../utils/utils';
-import { fetchOffers, fetchAddFavorite, fetchRemoveFavorite, fetchFavorites } from '../../api-actions/api-actions';
+import { fetchOffers, fetchAddFavorite, fetchRemoveFavorite, fetchFavorites, fetchNearbyOffers } from '../../api-actions/api-actions';
 import { OffersArray, OfferType } from '../../../types/types';
 
 type userActivityType = {
@@ -10,6 +10,7 @@ type userActivityType = {
   favorites: OffersArray | null;
   chosenOffer: OfferType | null;
   userInfo: string | null;
+  nearbyOffers: OffersArray | null;
 };
 
 const initialState : userActivityType = {
@@ -18,7 +19,8 @@ const initialState : userActivityType = {
   chosenCity: 'Amsterdam',
   favorites: null,
   chosenOffer: null,
-  userInfo: null
+  userInfo: null,
+  nearbyOffers: null
 };
 
 const userActivity = createSlice({
@@ -51,6 +53,9 @@ const userActivity = createSlice({
       })
       .addCase(fetchRemoveFavorite.fulfilled, (state) => {
         state = {...state};
+      })
+      .addCase(fetchNearbyOffers.fulfilled, (state, action) => {
+        state.nearbyOffers = action.payload;
       });
   }
 });

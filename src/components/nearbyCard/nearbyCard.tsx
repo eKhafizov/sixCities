@@ -4,14 +4,15 @@ import { Link } from 'react-router-dom';
 import BookmarkSmall from '../bookmarkSmall/bookmarkSmall';
 
 
-function OfferCard({offer}: {offer: OfferType}) : JSX.Element {
+function NearbyCard({key, offer} : {key: number; offer: OfferType}) : JSX.Element {
 
-  return offer && (
-    <article key={offer.id} className="cities__card place-card">
-      {offer.isPremium && <div className="place-card__mark"><span>Premium</span></div>}
-      <div className="cities__image-wrapper place-card__image-wrapper">
-        <Link to={`${AppRoutes.OFFER}${offer.id}`}>
-          <img className="place-card__image" src={offer.previewImage.replace('https://13.react.pages.academy', 'https://13.react.htmlacademy.pro')} width="260" height="200" alt={offer.title}/>
+
+  return (
+    <article className="near-places__card place-card">
+      {offer.isPremium && (<div className="place-card__mark"><span>Premium</span></div>)}
+      <div className="near-places__image-wrapper place-card__image-wrapper">
+        <Link to={`${AppRoutes.OFFER}${offer.id}`} >
+          <img className="place-card__image" src={offer.previewImage.replace('https://13.react.pages.academy', 'https://13.react.htmlacademy.pro')} width="260" height="200" alt={offer.title} />
         </Link>
       </div>
       <div className="place-card__info">
@@ -22,20 +23,20 @@ function OfferCard({offer}: {offer: OfferType}) : JSX.Element {
           </div>
 
           <BookmarkSmall offer={offer} />
-        </div>
 
+        </div>
         <div className="place-card__rating rating">
           <div className="place-card__stars rating__stars">
-            <span style={{width: '80%'}}>{offer.rating}</span>
+            <span style={{width: '100%'}}>{offer.rating}</span>
             <span className="visually-hidden">Rating</span>
           </div>
         </div>
         <h2 className="place-card__name">
-          <Link to={`${AppRoutes.OFFER} ${offer.id}`}>{offer.title}</Link>
+          <Link to={`${AppRoutes.OFFER}${offer.id}`}>{offer.title}</Link>
         </h2>
         <p className="place-card__type">{offer.type}</p>
       </div>
     </article>
   );
 }
-export default OfferCard;
+export default NearbyCard;
