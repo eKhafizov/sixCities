@@ -44,16 +44,10 @@ function App(): JSX.Element {
             </PrivateRoute>
           }
         />
-        <Route
-          path='*'
-          element={<ErrorPage />}
-        />
+        <Route path='*' element={<ErrorPage />} />
       </Route>
       <Route path={AppRoutes.LOGIN} element={<LoginPage />} />
-      <Route
-        path='*'
-        element={<ErrorPage />}
-      />
+      <Route path='*' element={<ErrorPage />} />
     </Routes>
   );
 }

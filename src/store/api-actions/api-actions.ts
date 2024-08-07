@@ -135,17 +135,9 @@ export const logoutAuth = createAsyncThunk<
   }
 );
 
+
 /*
-const {data} = await api.get<OffersArrayType>(APIRoute.Offers);
 const {data} = await api.get<OffersArrayType>(`${APIRoute.Offers}/${offerId}/nearby`);
 const {data} = await api.get<Comments>(`${APIRoute.Comments}/${offerId}`);
 const {data} = await api.post<Review>(`${APIRoute.Comments}/${id}`, {comment, rating});
-const {data} = await api.get<OffersArrayType>(APIRoute.Favourite);
-const {data} = await api.post<ServerResponse>(`${APIRoute.Favourite}/${offerId}/1`);
-const {data} = await api.post<ServerResponse>(`${APIRoute.Favourite}/${offerId}/0`);
-await api.delete(APIRoute.Logout);
-
-await api.get(APIRoute.Login);
-const {data: {token}} = await api.post<UserData>(APIRoute.Login, {email, password});
-
 */

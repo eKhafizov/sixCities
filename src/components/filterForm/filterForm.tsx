@@ -26,16 +26,13 @@ function FilterForm() : JSX.Element {
       method="get"
     >
       <span className="places__sorting-caption" >Sort by </span>
-      <span
-        className="places__sorting-type"
+      <span className="places__sorting-type"
         onClick={(e) => {
           e.preventDefault();
           setOpened((prev) => !prev);
         }}
       >
-        {
-          chosenFilter
-        }
+        {chosenFilter}
         <svg className="places__sorting-arrow" width="7" height="4">
           <use xlinkHref="#icon-arrow-select"></use>
         </svg>
