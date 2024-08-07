@@ -3,7 +3,7 @@ import { RootState } from '../types/types';
 import { AppDispatch } from '../types/types';
 import { AxiosInstance } from 'axios';
 import { APIRoute } from '../utils/apiRoutes';
-import { OffersArray, CommentServerType } from '../../types/types';
+import { OffersArray, CommentServerType, CommentType } from '../../types/types';
 import { dropToken, saveToken } from '../../utils/token';
 import { ServerResponse } from 'http';
 import { getUserInfo } from '../slices/userActivity/userActivity';
@@ -166,6 +166,22 @@ export const fetchComment = createAsyncThunk<
       return data;
     });
 
+export const fetchAddComment = createAsyncThunk<
+    CommentType,
+    CommentType,
+    {
+      dispatch: AppDispatch;
+      state: RootState;
+      extra: AxiosInstance;
+    }
+>(
+  'data/addComment',
+  async ({id, comment, rating}, {dispatch, extra: api}) => {
+    const {data} = await api.post<CommentType>(`${APIRoute.Comments}/${id}`, {comment, rating});
+    dispatch(fetchComment({offerId: id}));
+    return data;
+  }
+);
 /*
 const {data} = await api.post<Review>(`${APIRoute.Comments}/${id}`, {comment, rating});
 */

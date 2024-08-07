@@ -22,7 +22,7 @@ function Comment({key, comment} : CommentComponentType) : JSX.Element {
         <div className="reviews__rating rating">
           <div className="reviews__stars rating__stars">
             <span style={{width: '80%'}}>{comment.rating}</span>
-            <span className="visually-hidden">Rating</span>
+            <span className="visually-hidden">{comment.rating}</span>
           </div>
         </div>
         <p className="reviews__text">

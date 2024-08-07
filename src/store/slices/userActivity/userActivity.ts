@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import Namespace from '../../utils/utils';
-import { fetchOffers, fetchAddFavorite, fetchRemoveFavorite, fetchFavorites, fetchNearbyOffers, fetchComment } from '../../api-actions/api-actions';
+import { fetchOffers, fetchAddFavorite, fetchRemoveFavorite, fetchFavorites, fetchNearbyOffers, fetchComment, fetchAddComment } from '../../api-actions/api-actions';
 import { CommentServerType, OffersArray, OfferType } from '../../../types/types';
 
 
@@ -62,6 +62,9 @@ const userActivity = createSlice({
       })
       .addCase(fetchComment.fulfilled, (state, action) => {
         state.comments = action.payload;
+      })
+      .addCase(fetchAddComment.fulfilled, (state, action) => {
+        state = {...state};
       });
   }
 });
