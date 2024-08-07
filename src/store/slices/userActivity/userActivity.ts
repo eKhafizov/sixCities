@@ -1,7 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit';
 import Namespace from '../../utils/utils';
-import { fetchOffers, fetchAddFavorite, fetchRemoveFavorite, fetchFavorites, fetchNearbyOffers } from '../../api-actions/api-actions';
-import { OffersArray, OfferType } from '../../../types/types';
+import { fetchOffers, fetchAddFavorite, fetchRemoveFavorite, fetchFavorites, fetchNearbyOffers, fetchComment, fetchAddComment } from '../../api-actions/api-actions';
+import { CommentServerType, OffersArray, OfferType } from '../../../types/types';
+
 
 type userActivityType = {
   chosenFilter: string;
@@ -11,6 +12,7 @@ type userActivityType = {
   chosenOffer: OfferType | null;
   userInfo: string | null;
   nearbyOffers: OffersArray | null;
+  comments: CommentServerType[] | null;
 };
 
 const initialState : userActivityType = {
@@ -20,7 +22,8 @@ const initialState : userActivityType = {
   favorites: null,
   chosenOffer: null,
   userInfo: null,
-  nearbyOffers: null
+  nearbyOffers: null,
+  comments: null
 };
 
 const userActivity = createSlice({
@@ -56,6 +59,12 @@ const userActivity = createSlice({
       })
       .addCase(fetchNearbyOffers.fulfilled, (state, action) => {
         state.nearbyOffers = action.payload;
+      })
+      .addCase(fetchComment.fulfilled, (state, action) => {
+        state.comments = action.payload;
+      })
+      .addCase(fetchAddComment.fulfilled, (state, action) => {
+        state = {...state};
       });
   }
 });
