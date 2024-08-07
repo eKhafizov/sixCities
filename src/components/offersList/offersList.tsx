@@ -1,12 +1,11 @@
 import { useAppSelector } from '../../store/hooks/hooks';
+import { getFilteredOffers } from '../../store/slices/userActivity/selectors';
 import FilterForm from '../filterForm/filterForm';
 import OfferCard from '../offerCard/offerCard';
 
 function OffersList() : JSX.Element {
 
-  const offers = useAppSelector((state) => state.USER_ACTIVITY.offers);
-  const chosenCity = useAppSelector((state) => state.USER_ACTIVITY.chosenCity);
-  const filteredOffers = offers?.filter((offer) => offer.city.name === chosenCity);
+  const filteredOffers = useAppSelector(getFilteredOffers);
 
   // .replace('https://13.react.pages.academy', 'https://13.react.htmlacademy.pro');
 

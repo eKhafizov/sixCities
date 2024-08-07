@@ -1,5 +1,7 @@
 // .replace('https://13.react.pages.academy', 'https://13.react.htmlacademy.pro');
 
+import { OfferType } from '../types/types';
+
 export const citiesList = [
   'Paris', 'Cologne', 'Brussels', 'Amsterdam', 'Hamburg', 'Dusseldorf'
 ];
@@ -47,3 +49,14 @@ export const citiesLocation = [
   },
 ];
 
+export function sortByPriceUp(a: OfferType,b: OfferType) {
+  return a.price - b.price;
+}
+
+export function sortByPriceDown(a: OfferType, b: OfferType) {
+  return b.price - a.price;
+}
+
+export function sortByPopularity(a: OfferType, b: OfferType) {
+  return b.rating - a.rating;
+}

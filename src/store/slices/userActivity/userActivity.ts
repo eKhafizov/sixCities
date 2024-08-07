@@ -6,7 +6,7 @@ import { CommentServerType, OffersArray, OfferType } from '../../../types/types'
 
 type userActivityType = {
   chosenFilter: string;
-  offers: OffersArray | null;
+  offers: OffersArray;
   chosenCity: string;
   favorites: OffersArray | null;
   chosenOffer: OfferType | null;
@@ -17,7 +17,7 @@ type userActivityType = {
 
 const initialState : userActivityType = {
   chosenFilter: 'popular',
-  offers: null,
+  offers: [],
   chosenCity: 'Amsterdam',
   favorites: null,
   chosenOffer: null,

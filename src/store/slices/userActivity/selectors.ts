@@ -2,18 +2,43 @@ import { createSelector } from '@reduxjs/toolkit';
 import { OffersArray, OfferType, CommentServerType } from '../../../types/types';
 import { RootState} from '../../types/types';
 import Namespace from '../../utils/utils';
+import { sortByPopularity, sortByPriceDown, sortByPriceUp } from '../../../utils/utils';
 
-export const getOffers = (state: Pick<RootState, Namespace.userActivity>) : OffersArray | null => state.USER_ACTIVITY.offers;
+export const getOffers = (state: Pick<RootState, Namespace.userActivity>) : OffersArray => state.USER_ACTIVITY.offers;
 export const getFavorites = (state: Pick<RootState, Namespace.userActivity>) : OffersArray | null => state.USER_ACTIVITY.favorites;
 export const getChosenOffer = (state: Pick<RootState, Namespace.userActivity>) : OfferType | null => state.USER_ACTIVITY.chosenOffer;
 export const getChosenCity = (state: Pick<RootState, Namespace.userActivity>) : string => state.USER_ACTIVITY.chosenCity;
 export const getNearbyOffers = (state: Pick<RootState, Namespace.userActivity>) : OffersArray | null => state.USER_ACTIVITY.nearbyOffers;
 export const getComments = (state: Pick<RootState, Namespace.userActivity >) : CommentServerType[] | null => state.USER_ACTIVITY.comments;
+export const getCurrentFilter = (state: Pick<RootState, Namespace.userActivity>) : string => state.USER_ACTIVITY.chosenFilter;
 
 export const isChosenFavorite = createSelector(
   [getFavorites, getChosenOffer],
   (favorites, chosenOffer) => {
     const isFavorite = chosenOffer !== null && favorites?.find((item) => item.id === chosenOffer.id);
     return isFavorite;
+  }
+);
+
+export const getFilteredOffers = createSelector(
+  [getOffers, getCurrentFilter, getChosenCity],
+  (offers, filter, chosenCity) => {
+    const offersInChosenCity = offers.filter((offer) => offer.city.name === chosenCity);
+    switch(filter) {
+      case 'popular':
+        return [...offersInChosenCity];
+        break;
+      case 'priceHighToLow':
+        return [...offersInChosenCity].sort(sortByPriceDown);
+        break;
+      case 'priceLowToHigh':
+        return [...offersInChosenCity].sort(sortByPriceUp);
+        break;
+      case 'topRatedFirst':
+        return [...offersInChosenCity].sort(sortByPopularity);
+        break;
+      default:
+        return [...offersInChosenCity];
+    }
   }
 );
