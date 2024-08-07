@@ -6,7 +6,7 @@ import { OffersArray, OfferType } from '../../../types/types';
 type userActivityType = {
   chosenFilter: string;
   offers: OffersArray | null;
-  chosenCity: string | null;
+  chosenCity: string;
   favorites: OffersArray | null;
   chosenOffer: OfferType | null;
   userInfo: string | null;

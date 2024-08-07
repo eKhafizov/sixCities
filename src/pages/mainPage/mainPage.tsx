@@ -2,7 +2,6 @@ import CitiesList from '../../components/citiesList/citiesList';
 import OffersList from '../../components/offersList/offersList';
 import MapSection from '../../components/mapSection/mapSection';
 
-
 function MainPage() : JSX.Element {
 
   return (
