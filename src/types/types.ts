@@ -6,6 +6,18 @@ export type CommentType = {
 
 export type CommentsType = CommentType[];
 
+export type CommentServerType = {
+  id : number ;
+  user : {
+    id : number;
+    isPro: boolean;
+    name: string;
+    avatarUrl: string;
+  };
+  rating : number;
+  comment : string;
+};
+
 export type OfferType = {
   bedrooms: number;
   city: {

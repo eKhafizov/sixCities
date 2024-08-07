@@ -5,7 +5,7 @@ import { getNearbyOffers, getOffers } from '../../store/slices/userActivity/sele
 import NearbyOffers from '../../components/nearbyOffers/nearbyOffers';
 import { useEffect } from 'react';
 import BookmarkLarge from '../../components/bookmarkLarge/bookmarkLarge';
-import { fetchNearbyOffers } from '../../store/api-actions/api-actions';
+import { fetchComment, fetchNearbyOffers } from '../../store/api-actions/api-actions';
 
 
 function OfferPage() : JSX.Element {
@@ -18,6 +18,7 @@ function OfferPage() : JSX.Element {
   const offersNearby = useAppSelector(getNearbyOffers);
   useEffect(() => {
     offer !== undefined && dispatch(fetchNearbyOffers({offerId: offer?.id}));
+    offer !== undefined && dispatch(fetchComment({offerId: offer?.id}));
   }, []);
 
   return offer ? (
