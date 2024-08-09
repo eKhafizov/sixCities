@@ -1,19 +1,29 @@
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { AppRoutes } from '../../utils/appRoutes';
-import { useAppDispatch, useAppSelector } from '../../store/hooks/hooks';
+import { useAppDispatch} from '../../store/hooks/hooks';
 import { chooseCity } from '../../store/slices/userActivity/userActivity';
-import { getFavorites } from '../../store/slices/userActivity/selectors';
 import { Link } from 'react-router-dom';
-import { fetchAddFavorite, fetchRemoveFavorite } from '../../store/api-actions/api-actions';
+import { useAddFavoriteMutation, useDeleteFavoriteMutation, useGetFavoritesQuery } from '../../features/apiSlice';
+
 
 function FavoritesBlock({city}: {city: string}) : JSX.Element {
 
   const [, setSearchParams] = useSearchParams();
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const favorites = useAppSelector(getFavorites);
+
+  //rtk-query get favorites
+  const {data} = useGetFavoritesQuery();
+  const favorites = data;
+
+  //rtk-query add favorite (POST)
+  const [addFavorite] = useAddFavoriteMutation();
+  const [deleteFavorite] = useDeleteFavoriteMutation();
+
+
   const favoritesInBlock = favorites?.filter((item) => item.city.name === city);
   const isFavorite = favorites?.find((item) => item.city.name === city);
+
 
   return favoritesInBlock ? (
     <li className="favorites__locations-items">
@@ -64,8 +74,8 @@ function FavoritesBlock({city}: {city: string}) : JSX.Element {
                     type="button"
                     onClick={(e) => {
                       isFavorite === undefined
-                        ? (dispatch(fetchAddFavorite({offerId: item.id})))
-                        : (dispatch(fetchRemoveFavorite({offerId: item.id})));
+                        ? addFavorite(item.id)
+                        : deleteFavorite(item.id);
                     }}
                   >
                     <svg className="place-card__bookmark-icon" width="18" height="19">

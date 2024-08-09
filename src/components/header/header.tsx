@@ -1,16 +1,19 @@
 import { useAppSelector, useAppDispatch } from '../../store/hooks/hooks';
 import { getAuth } from '../../store/slices/serverData/selectors';
-import { getFavorites } from '../../store/slices/userActivity/selectors';
 import { AuthStatus } from '../../store/utils/utils';
 import { AppRoutes } from '../../utils/appRoutes';
 import { Link, useNavigate } from 'react-router-dom';
 import { logoutAuth } from '../../store/api-actions/api-actions';
+import { useGetFavoritesQuery } from '../../features/apiSlice';
 
 function Header() : JSX.Element {
 
   const dispatch = useAppDispatch();
   const auth = useAppSelector(getAuth);
-  const favorites = useAppSelector(getFavorites);
+
+  const {data} = useGetFavoritesQuery();
+  const favorites = data;
+
   const userInfo = useAppSelector((state) => state.USER_ACTIVITY.userInfo);
   const navigate = useNavigate();
   const favoriteNumber = () =>

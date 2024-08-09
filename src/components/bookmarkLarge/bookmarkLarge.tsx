@@ -1,17 +1,26 @@
 import { OfferType } from '../../types/types';
-import { useAppDispatch, useAppSelector } from '../../store/hooks/hooks';
+import {useAppSelector } from '../../store/hooks/hooks';
 import { useNavigate } from 'react-router-dom';
-import { fetchAddFavorite, fetchRemoveFavorite } from '../../store/api-actions/api-actions';
 import { AppRoutes } from '../../utils/appRoutes';
 import { AuthStatus } from '../../store/utils/utils';
+import { useAddFavoriteMutation, useDeleteFavoriteMutation, useGetFavoritesQuery } from '../../features/apiSlice';
+
 
 function BookmarkLarge({offer} : {offer: OfferType}) : JSX.Element {
 
   const auth = useAppSelector((state) => state.SERVER_DATA.authorized);
   const navigate = useNavigate();
-  const favorites = useAppSelector((state) => state.USER_ACTIVITY.favorites);
+
+  //rtk-query get favorites
+  const {data} = useGetFavoritesQuery();
+  const favorites = data;
+
+  //rtk-query add favorite (POST)
+  const [addFavorite] = useAddFavoriteMutation();
+  const [deleteFavorite] = useDeleteFavoriteMutation();
+
   const isFavorite = favorites?.find((item) => item.id === offer?.id);
-  const dispatch = useAppDispatch();
+
 
   return (
     auth === AuthStatus.AUTH
@@ -21,8 +30,8 @@ function BookmarkLarge({offer} : {offer: OfferType}) : JSX.Element {
           type="button"
           onClick={(e) => {
             isFavorite === undefined
-              ? (dispatch(fetchAddFavorite({offerId: offer.id})))
-              : (dispatch(fetchRemoveFavorite({offerId: offer.id})));
+              ? addFavorite(offer.id)
+              : deleteFavorite(offer.id);
           }}
         >
           <svg className="place-card__bookmark-icon" width="31" height="33">

@@ -18,34 +18,61 @@ export const sixSitiesApi = createApi({
       return headers;
     },
   }),
-  //tag for updating
-  tagTypes: ['COMMENTS'],
+  //all tag types
+  tagTypes: ['COMMENTS', 'FAVORITES'],
   endpoints: (builder) => ({
     getOffers: builder.query<OffersArray, void>({
       query: () => APIRoute.Offers,
     }),
+
     getComments: builder.query<CommentServerType[], number>({
       query: (offerId) => `${APIRoute.Comments}/${offerId}`,
-      //tag for updating
+      //attached tag
       providesTags: ['COMMENTS'],
     }),
-    // eslint-disable-next-line @typescript-eslint/ban-types
-    addNewComment: builder.mutation<{}, CommentType>({
+    addNewComment: builder.mutation<void, CommentType>({
       query: (formObject) => ({
         url: `${APIRoute.Comments}/${formObject.id}`,
         method: 'POST',
         body: {comment: formObject.comment, rating: formObject.rating}
       }),
-      //tag for updating
+      //using tag
       invalidatesTags: ['COMMENTS']
+    }),
+
+    getFavorites: builder.query<OffersArray, void>({
+      query: () => APIRoute.Favourite,
+      //attached tag
+      providesTags: ['FAVORITES']
+    }),
+    addFavorite: builder.mutation<void, number>({
+      query: (id) => ({
+        url: `${APIRoute.Favourite}/${id}/1`,
+        method: 'POST',
+        body: id
+      }),
+      //using tag
+      invalidatesTags: ['FAVORITES']
+    }),
+    deleteFavorite: builder.mutation<void, number>({
+      query: (id) => ({
+        url: `${APIRoute.Favourite}/${id}/0`,
+        method: 'POST',
+        body: id
+      }),
+      invalidatesTags : ['FAVORITES']
     })
+
   }),
 });
 
-// Export hooks for usage in functional components, which are
-// auto-generated based on the defined endpoints
+
+// auto-generated hooks
 export const {
   useGetOffersQuery,
   useGetCommentsQuery,
-  useAddNewCommentMutation
+  useAddNewCommentMutation,
+  useGetFavoritesQuery,
+  useAddFavoriteMutation,
+  useDeleteFavoriteMutation
 } = sixSitiesApi;
