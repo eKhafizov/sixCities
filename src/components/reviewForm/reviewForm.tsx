@@ -1,18 +1,9 @@
+
 import { ChangeEvent, FormEvent, useState} from 'react';
 import { OfferType } from '../../types/types';
 import { useAddNewCommentMutation } from '../../features/apiSlice';
 //import { useAppDispatch } from '../../store/hooks/hooks';
 //import { fetchAddComment } from '../../store/api-actions/api-actions';
-
-
-// вот это просто копировал
-interface AddPostFormFields extends HTMLFormControlsCollection {
-  postTitle: HTMLInputElement;
-  postContent: HTMLTextAreaElement;
-}
-interface AddPostFormElements extends HTMLFormElement {
-  readonly elements: AddPostFormFields;
-}
 
 
 type ReviewsType = {
@@ -36,17 +27,16 @@ function ReviewForm({offer} : ReviewsType) : JSX.Element {
   };
 
   //different Type of e
-  const handleSubmit = async (e: FormEvent<AddPostFormElements>) => {
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     //dispatch(fetchAddComment(form));
     // rtk-query way to post data to server
-    await addNewComment(form).unwrap();
-
+    addNewComment({id: offer.id, rating: form.rating , comment: form.comment});
     setForm({ id: offer.id, rating: 0, comment: ''});
   };
 
   return (
-    <form onSubmit={handleSubmit} className="reviews__form form" action="#" method="post" >
+    <form onSubmit={handleSubmit} className="reviews__form form" >
       <label className="reviews__label form__label" htmlFor="review">Your review</label>
       <div className="reviews__rating-form form__rating">
         <input
