@@ -6,7 +6,6 @@ import BookmarkSmall from '../bookmarkSmall/bookmarkSmall';
 
 function NearbyCard({key, offer} : {key: number; offer: OfferType}) : JSX.Element {
 
-
   return (
     <article className="near-places__card place-card">
       {offer.isPremium && (<div className="place-card__mark"><span>Premium</span></div>)}

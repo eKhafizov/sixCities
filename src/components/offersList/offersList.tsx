@@ -7,8 +7,6 @@ function OffersList() : JSX.Element {
 
   const filteredOffers = useAppSelector(getFilteredOffers);
 
-  // .replace('https://13.react.pages.academy', 'https://13.react.htmlacademy.pro');
-
   return (
     <section className="cities__places places">
       <h2 className="visually-hidden">Places</h2>

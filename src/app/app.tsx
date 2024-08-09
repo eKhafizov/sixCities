@@ -51,5 +51,4 @@ function App(): JSX.Element {
     </Routes>
   );
 }
-
 export default App;

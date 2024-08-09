@@ -6,13 +6,11 @@ import { fetchAddComment } from '../../store/api-actions/api-actions';
 type ReviewsType = {
   offer: OfferType;
 }
+
 function ReviewForm({offer} : ReviewsType) : JSX.Element {
 
-  const [form, setForm] = useState({
-    id: offer.id,
-    rating: 0,
-    comment: ''
-  });
+  const dispatch = useAppDispatch();
+  const [form, setForm] = useState({ id: offer.id, rating: 0, comment: '' });
 
   const handleChangeText = (e: ChangeEvent<HTMLTextAreaElement>) => {
     e.preventDefault();
@@ -23,16 +21,10 @@ function ReviewForm({offer} : ReviewsType) : JSX.Element {
     setForm((prev) => ({...prev, rating: id}));
   };
 
-  const dispatch = useAppDispatch();
-
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     dispatch(fetchAddComment(form));
-    setForm({
-      id: offer.id,
-      rating: 0,
-      comment: ''
-    });
+    setForm({ id: offer.id, rating: 0, comment: ''});
   };
 
   return (

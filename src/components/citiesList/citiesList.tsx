@@ -1,17 +1,15 @@
 import { useSearchParams } from 'react-router-dom';
 import { citiesList } from '../../utils/utils';
-import styles from './style.module.css';
 import { useAppDispatch, useAppSelector } from '../../store/hooks/hooks';
 import {chooseCity} from '../../store/slices/userActivity/userActivity';
+import styles from './style.module.css';
 
 function CitiesList() : JSX.Element {
 
   const dispatch = useAppDispatch();
   const chosenCity = useAppSelector((state) => state.USER_ACTIVITY.chosenCity);
   const currentFilter = useAppSelector((state) => state.USER_ACTIVITY.chosenFilter);
-
   const [, setSearchParams] = useSearchParams();
-
 
   return (
     <div className="tabs">
