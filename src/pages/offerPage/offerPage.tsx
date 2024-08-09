@@ -11,16 +11,13 @@ import { useGetOffersQuery } from '../../features/apiSlice';
 
 function OfferPage() : JSX.Element {
 
-  const param = useParams();
-  // Var1 with axios and thunks and slices
-  //const offers = useAppSelector(getOffers);
-  // Var-2 with RTK-query
+  // getting data using rtk-query hook
   const {data} = useGetOffersQuery();
   const offers = data;
 
+  const param = useParams();
   const offer = offers?.find((item) => item.id === Number(param.id));
   const dispatch = useAppDispatch();
-
   const offersNearby = useAppSelector(getNearbyOffers);
   useEffect(() => {
     offer !== undefined && dispatch(fetchNearbyOffers({offerId: offer?.id}));

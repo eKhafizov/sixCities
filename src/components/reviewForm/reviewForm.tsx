@@ -1,9 +1,6 @@
-
 import { ChangeEvent, FormEvent, useState} from 'react';
 import { OfferType } from '../../types/types';
 import { useAddNewCommentMutation } from '../../features/apiSlice';
-//import { useAppDispatch } from '../../store/hooks/hooks';
-//import { fetchAddComment } from '../../store/api-actions/api-actions';
 
 
 type ReviewsType = {
@@ -12,11 +9,11 @@ type ReviewsType = {
 
 function ReviewForm({offer} : ReviewsType) : JSX.Element {
 
+  //1. getting rtk-query hook
   const [addNewComment] = useAddNewCommentMutation();
 
   //const dispatch = useAppDispatch();
   const [form, setForm] = useState({ id: offer.id, rating: 0, comment: '' });
-
   const handleChangeText = (e: ChangeEvent<HTMLTextAreaElement>) => {
     e.preventDefault();
     const {value} = e.target;
@@ -26,14 +23,15 @@ function ReviewForm({offer} : ReviewsType) : JSX.Element {
     setForm((prev) => ({...prev, rating: id}));
   };
 
-  //different Type of e
+  //2. submitting form
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    //dispatch(fetchAddComment(form));
-    // rtk-query way to post data to server
+
+    //3. using rtk-query hook to post data to server
     addNewComment({id: offer.id, rating: form.rating , comment: form.comment});
     setForm({ id: offer.id, rating: 0, comment: ''});
   };
+
 
   return (
     <form onSubmit={handleSubmit} className="reviews__form form" >

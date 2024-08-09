@@ -18,13 +18,16 @@ export const sixSitiesApi = createApi({
       return headers;
     },
   }),
-  // all endpoint from our APIRoute
+  //tag for updating
+  tagTypes: ['COMMENTS'],
   endpoints: (builder) => ({
     getOffers: builder.query<OffersArray, void>({
       query: () => APIRoute.Offers,
     }),
     getComments: builder.query<CommentServerType[], number>({
-      query: (offerId) => `${APIRoute.Comments}/${offerId}`
+      query: (offerId) => `${APIRoute.Comments}/${offerId}`,
+      //tag for updating
+      providesTags: ['COMMENTS'],
     }),
     // eslint-disable-next-line @typescript-eslint/ban-types
     addNewComment: builder.mutation<{}, CommentType>({
@@ -32,7 +35,9 @@ export const sixSitiesApi = createApi({
         url: `${APIRoute.Comments}/${formObject.id}`,
         method: 'POST',
         body: {comment: formObject.comment, rating: formObject.rating}
-      })
+      }),
+      //tag for updating
+      invalidatesTags: ['COMMENTS']
     })
   }),
 });
