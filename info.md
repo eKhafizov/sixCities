@@ -13,8 +13,6 @@ const {data} = await api.get<OffersArrayType>(`${APIRoute.Offers}/${offerId}/nea
 const {data} = await api.get<Comments>(`${APIRoute.Comments}/${offerId}`);
 const {data} = await api.post<Review>(`${APIRoute.Comments}/${id}`, {comment, rating});
 await api.delete(APIRoute.Logout);
-
-
 const {data} = await api.get<OffersArrayType>(APIRoute.Favourite);
 await api.get(APIRoute.Login);
 const {data: {token}} = await api.post<UserData>(APIRoute.Login, {email, password});
