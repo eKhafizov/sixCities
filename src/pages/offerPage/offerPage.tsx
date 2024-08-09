@@ -1,17 +1,23 @@
 import { useParams } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../store/hooks/hooks';
 import Reviews from '../../components/reviews/reviews';
-import { getNearbyOffers, getOffers } from '../../store/slices/userActivity/selectors';
+import { getNearbyOffers } from '../../store/slices/userActivity/selectors';
 import NearbyOffers from '../../components/nearbyOffers/nearbyOffers';
 import { useEffect } from 'react';
 import BookmarkLarge from '../../components/bookmarkLarge/bookmarkLarge';
 import { fetchComment, fetchNearbyOffers } from '../../store/api-actions/api-actions';
+import { useGetOffersQuery } from '../../features/apiSlice';
 
 
 function OfferPage() : JSX.Element {
 
   const param = useParams();
-  const offers = useAppSelector(getOffers);
+  // Var1 with axios and thunks and slices
+  //const offers = useAppSelector(getOffers);
+  // Var-2 with RTK-query
+  const {data} = useGetOffersQuery();
+  const offers = data;
+
   const offer = offers?.find((item) => item.id === Number(param.id));
   const dispatch = useAppDispatch();
 

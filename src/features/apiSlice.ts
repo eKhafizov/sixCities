@@ -10,7 +10,7 @@ export const sixSitiesApi = createApi({
   baseQuery: fetchBaseQuery({baseUrl: 'https://13.react.htmlacademy.pro/six-cities' }),
   // all endpoint from our APIRoute
   endpoints: (builder) => ({
-    getOffers: builder.query<OffersArray, string>({
+    getOffers: builder.query<OffersArray, void>({
       query: () => APIRoute.Offers,
     }),
   }),
