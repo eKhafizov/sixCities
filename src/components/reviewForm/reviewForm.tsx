@@ -1,7 +1,19 @@
 import { ChangeEvent, FormEvent, useState} from 'react';
 import { OfferType } from '../../types/types';
-import { useAppDispatch } from '../../store/hooks/hooks';
-import { fetchAddComment } from '../../store/api-actions/api-actions';
+import { useAddNewCommentMutation } from '../../features/apiSlice';
+//import { useAppDispatch } from '../../store/hooks/hooks';
+//import { fetchAddComment } from '../../store/api-actions/api-actions';
+
+
+// вот это просто копировал
+interface AddPostFormFields extends HTMLFormControlsCollection {
+  postTitle: HTMLInputElement;
+  postContent: HTMLTextAreaElement;
+}
+interface AddPostFormElements extends HTMLFormElement {
+  readonly elements: AddPostFormFields;
+}
+
 
 type ReviewsType = {
   offer: OfferType;
@@ -9,7 +21,9 @@ type ReviewsType = {
 
 function ReviewForm({offer} : ReviewsType) : JSX.Element {
 
-  const dispatch = useAppDispatch();
+  const [addNewComment] = useAddNewCommentMutation();
+
+  //const dispatch = useAppDispatch();
   const [form, setForm] = useState({ id: offer.id, rating: 0, comment: '' });
 
   const handleChangeText = (e: ChangeEvent<HTMLTextAreaElement>) => {
@@ -21,9 +35,13 @@ function ReviewForm({offer} : ReviewsType) : JSX.Element {
     setForm((prev) => ({...prev, rating: id}));
   };
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+  //different Type of e
+  const handleSubmit = async (e: FormEvent<AddPostFormElements>) => {
     e.preventDefault();
-    dispatch(fetchAddComment(form));
+    //dispatch(fetchAddComment(form));
+    // rtk-query way to post data to server
+    await addNewComment(form).unwrap();
+
     setForm({ id: offer.id, rating: 0, comment: ''});
   };
 

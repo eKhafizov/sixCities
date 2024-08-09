@@ -15,9 +15,9 @@ export const fetchFavorites = createAsyncThunk<
   OffersArray,
   undefined,
   {
-  dispatch: AppDispatch;
-  state: RootState;
-  extra: AxiosInstance;
+    dispatch: AppDispatch;
+    state: RootState;
+    extra: AxiosInstance;
   }
 >(
   'fetch/getFavorite',
